@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const { User } = require("./models/user");
+const { auth } = require("./middleware/auth");
 
 const app = express();
 require("dotenv").config();
@@ -16,6 +17,19 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 //********USERS*****************//
+
+app.get("/api/users/auth", auth, (req, res) => {
+  res.status(200).json({
+    isAdmin: req.user.role === 0 ? false : true,
+    isAuth: true,
+    email: req.user.email,
+    name: req.user.name,
+    lastName: req.user.lastName,
+    role: req.user.role,
+    cart: req.user.cart,
+    history: req.user.history
+  });
+});
 
 app.post("/api/users/register", (req, res) => {
   const user = new User(req.body);
@@ -49,7 +63,14 @@ app.post("/api/users/login", (req, res) => {
     });
   });
 });
-
+app.get("/api/users/logout", auth, (req, res) => {
+  User.findOneAndUpdate({ _id: req.user._id }, { token: " " }, (err, doc) => {
+    if (err) return res.json({ sucess: false, err });
+    return res.status(200).send({
+      sucess: true
+    });
+  });
+});
 const port = process.env.PORT || 3002;
 
 app.listen(port, () => {
