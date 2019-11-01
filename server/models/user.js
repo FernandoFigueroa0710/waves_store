@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require('dotenv').config();
 const SALT_I = 10;
 const userSchema = mongoose.Schema({
   email: {
@@ -56,5 +58,22 @@ userSchema.pre("save", function(next) {
   }
 });
 
+userSchema.methods.comparePassword = function (candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+    if (err) { return cb(err); }
+
+    cb(null, isMatch);
+  });
+};
+
+userSchema.methods.generateToken = function(cb){
+  var user = this;
+  var token = jwt.sign(user._id.toHexString(), process.env.SECRET);
+  user.token = token;
+  user.save(function(err, user){
+    if(err) return cb(err);
+    cb(null, user);
+  });
+};
 const User = mongoose.model("User", userSchema);
 module.exports = { User };
