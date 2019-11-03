@@ -3,19 +3,34 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const { User } = require("./models/user");
+const { Brand } = require("./models/brand");
 const { auth } = require("./middleware/auth");
 
 const app = express();
 require("dotenv").config();
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.DATABASE);
-
+mongoose
+  .connect(process.env.DATABASE)
+  .then(() => console.log("Mongo DB Connected"))
+  .catch(err => console.log("Err is", err));
+console.log("!!!", process.env.DATABASE);
 //Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+//******Brands*****************//
+app.post("/api/product/brand", auth, (req, res) => {
+  const brand = new Brand(req.body);
 
+  brand.save((err, doc) => {
+    if (err) return res.jason({ success: false, err });
+    res.status(200).json({
+      sucess: true,
+      brand: doc
+    });
+  });
+});
 //********USERS*****************//
 
 app.get("/api/users/auth", auth, (req, res) => {
