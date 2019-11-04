@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const { User } = require("./models/user");
 const { Brand } = require("./models/brand");
 const { Wood } = require("./models/wood");
+const { Product } = require("./models/product");
 
 //********Middleware***********//
 const { auth } = require("./middleware/auth");
@@ -23,6 +24,20 @@ mongoose
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+//************PRODUCT***********//
+
+app.post("/api/product/item", auth, admin, (req, res) => {
+  const product = new Product(req.body);
+
+  product.save((err, doc) => {
+    if (err) return res.json({ success: false, err });
+    res.status(200).json({
+      success: true,
+      product: doc
+    });
+  });
+});
 
 //***********WOODS*************//
 app.post("/api/product/wood", auth, admin, (req, res) => {
