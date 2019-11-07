@@ -26,6 +26,28 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 //************PRODUCT***********//
+//Get by arrival
+//items?sortBy=createdAt&order=desc&limit=4
+
+// by sell
+//items?sortyBy=sold&order=desc&limit100&skip=5
+
+app.get("/api/products/items", (req, res) => {
+  let order = req.query.order ? req.query.order : "asc";
+  let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+  let limit = req.query.limit ? parseInt(req.query.limit) : 100;
+
+  Product.find()
+    .populate("brand")
+    .populate("wood")
+    .sort([[sortBy, order]])
+    .limit(limit)
+    .exec((err, items) => {
+      if (err) return res.status(400).send(err);
+      res.send(items);
+    });
+});
+
 app.get("/api/product/item_by_id", (req, res) => {
   let type = req.query.type;
   let items = req.query.id;
@@ -38,8 +60,8 @@ app.get("/api/product/item_by_id", (req, res) => {
     });
   }
   Product.find({ _id: { $in: items } })
-    .populate('brand')
-    .populate('wood')
+    .populate("brand")
+    .populate("wood")
     .exec((err, docs) => {
       if (err) return res.status(400);
       res.status(200).send(docs);
@@ -53,7 +75,7 @@ app.post("/api/product/item", auth, admin, (req, res) => {
     if (err) return res.json({ success: false, err });
     res.status(200).json({
       success: true,
-      product: doc
+      product: doc,
     });
   });
 });
@@ -66,7 +88,7 @@ app.post("/api/product/wood", auth, admin, (req, res) => {
     if (err) return res.jason({ success: false, err });
     res.status(200).json({
       success: true,
-      wood: doc
+      wood: doc,
     });
   });
 });
@@ -85,7 +107,7 @@ app.post("/api/product/brand", auth, admin, (req, res) => {
     if (err) return res.jason({ success: false, err });
     res.status(200).json({
       sucess: true,
-      brand: doc
+      brand: doc,
     });
   });
 });
@@ -107,7 +129,7 @@ app.get("/api/users/auth", auth, (req, res) => {
     lastName: req.user.lastName,
     role: req.user.role,
     cart: req.user.cart,
-    history: req.user.history
+    history: req.user.history,
   });
 });
 
@@ -118,7 +140,7 @@ app.post("/api/users/register", (req, res) => {
     if (err) return res.json({ success: false, err });
     res.status(200).json({
       success: true,
-      userdata: doc
+      userdata: doc,
     });
   });
 });
@@ -147,7 +169,7 @@ app.get("/api/users/logout", auth, (req, res) => {
   User.findOneAndUpdate({ _id: req.user._id }, { token: " " }, (err, doc) => {
     if (err) return res.json({ sucess: false, err });
     return res.status(200).send({
-      sucess: true
+      sucess: true,
     });
   });
 });
