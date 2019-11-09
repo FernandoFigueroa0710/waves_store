@@ -16,8 +16,12 @@ const app = express();
 require("dotenv").config();
 
 mongoose.Promise = global.Promise;
+mongoose.set("useCreateIndex", true);
 mongoose
-  .connect(process.env.DATABASE)
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("Mongo DB Connected"))
   .catch(err => console.log("Err is", err));
 
@@ -75,7 +79,7 @@ app.post("/api/product/item", auth, admin, (req, res) => {
     if (err) return res.json({ success: false, err });
     res.status(200).json({
       success: true,
-      product: doc
+      product: doc,
     });
   });
 });
@@ -88,7 +92,7 @@ app.post("/api/product/wood", auth, admin, (req, res) => {
     if (err) return res.jason({ success: false, err });
     res.status(200).json({
       success: true,
-      wood: doc
+      wood: doc,
     });
   });
 });
@@ -107,7 +111,7 @@ app.post("/api/product/brand", auth, admin, (req, res) => {
     if (err) return res.jason({ success: false, err });
     res.status(200).json({
       sucess: true,
-      brand: doc
+      brand: doc,
     });
   });
 });
@@ -129,7 +133,7 @@ app.get("/api/users/auth", auth, (req, res) => {
     lastName: req.user.lastName,
     role: req.user.role,
     cart: req.user.cart,
-    history: req.user.history
+    history: req.user.history,
   });
 });
 
@@ -140,7 +144,7 @@ app.post("/api/users/register", (req, res) => {
     if (err) return res.json({ success: false, err });
     res.status(200).json({
       success: true,
-      userdata: doc
+      userdata: doc,
     });
   });
 });
@@ -169,7 +173,7 @@ app.get("/api/users/logout", auth, (req, res) => {
   User.findOneAndUpdate({ _id: req.user._id }, { token: " " }, (err, doc) => {
     if (err) return res.json({ sucess: false, err });
     return res.status(200).send({
-      sucess: true
+      sucess: true,
     });
   });
 });
