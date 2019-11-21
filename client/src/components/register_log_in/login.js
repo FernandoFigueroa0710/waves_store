@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import FormField from "../utils/forms/formField";
-import {update} from "../utils/forms/formActions";
+import { update, generateData, isFormValid } from "../utils/forms/formActions";
 import { connect } from "react-redux";
 
 class Login extends Component {
@@ -41,14 +41,28 @@ class Login extends Component {
       },
     },
   };
-  updateForm = (element) => {
-    const newFormData = update(element, this.state.formData, 'login');
+  updateForm = element => {
+    const newFormData = update(element, this.state.formData, "login");
     this.setState({
-      formError : false,
-      formData : newFormData
-    })
+      formError: false,
+      formData: newFormData,
+    });
   };
-  submitForm = () => {};
+  submitForm = event => {
+    event.preventDefault();
+
+    let dataToSubmit = generateData(this.state.formData, "login");
+
+    let formIsValid = isFormValid(this.state.formData, "login");
+
+    if (formIsValid) {
+      console.log("Jajaja", dataToSubmit);
+    } else {
+      this.setState({
+        formError: true,
+      });
+    }
+  };
   render() {
     return (
       <div className="signin_wrapper">
@@ -58,11 +72,15 @@ class Login extends Component {
             formData={this.state.formData.email}
             change={element => this.updateForm(element)}
           />
-            <FormField
+          <FormField
             id={"password"}
             formData={this.state.formData.password}
             change={element => this.updateForm(element)}
           />
+          {this.state.formError ? (
+            <div className="error_label">Please check your data </div>
+          ) : null}
+          <button onClick={event => this.submitForm(event)}>Login</button>
         </form>
       </div>
     );

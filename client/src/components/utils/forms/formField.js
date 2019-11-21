@@ -10,7 +10,7 @@ const FormField = ({ formData, change, id }) => {
     }
 
     return errorMessage;
-  }
+  };
 
   const renderTemplate = () => {
     let formTemplate = null;
