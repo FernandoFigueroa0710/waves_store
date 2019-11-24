@@ -1,6 +1,7 @@
 import React from "react";
 
 const FormField = ({ formData, change, id }) => {
+
   const showError = () => {
     let errorMessage = null;
     if (formData.validation && !formData.valid) {
@@ -14,7 +15,6 @@ const FormField = ({ formData, change, id }) => {
 
   const renderTemplate = () => {
     let formTemplate = null;
-
     switch (formData.element) {
       case "input":
         formTemplate = (
