@@ -40,13 +40,12 @@ class Header extends Component {
     ],
   };
 
-  logOutHandler = () => {
-    this.props.dispatch(logoutUser())
-      .then(response => {
-        if (response.payload.success) {
-          this.props.history.push("/")
-        }
-      })
+  logoutHandler = () => {
+    this.props.dispatch(logoutUser()).then(response => {
+      if (response.payload.sucess) {
+        this.props.history.push('/')
+      }
+    })
   }
 
   cartLink = (item, i) => {
@@ -69,7 +68,7 @@ class Header extends Component {
     item.name === "Logout" ?
       <div className="log_out_link"
         key={i}
-        onClick={() => this.logOutHandler()}
+        onClick={() => this.logoutHandler()}
       >
         {item.name}
       </div>
@@ -128,4 +127,5 @@ function mapStateToProps(state) {
     user: state.user
   }
 }
+
 export default connect(mapStateToProps)(withRouter(Header));

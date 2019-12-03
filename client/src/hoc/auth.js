@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-import { connect } from  "react-redux";
+import { connect } from "react-redux";
 import { auth } from "../redux/actions/user_actions";
-import {CircularProgress} from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
 
-export default function(ComposedClass, reload, adminRoute = null) {
+export default function (ComposedClass, reload, adminRoute = null) {
     class AuthenticationCheck extends Component {
         _isMounted = false;
 
-        state ={
+        state = {
             loading: true,
 
         }
 
         componentDidMount() {
-        this._isMounted = true;
+            this._isMounted = true;
 
             this.props.dispatch(auth()).then(response => {
                 let user = this.props.user.userData;
@@ -22,7 +22,7 @@ export default function(ComposedClass, reload, adminRoute = null) {
                         this.props.history.push("/register_log_in");
                     }
                 } else {
-                    if(adminRoute && !user.isAdmin){
+                    if (adminRoute && !user.isAdmin) {
                         this.props.history.push("/user/dashboard");
                     } else {
                         if (reload === false) {
@@ -35,26 +35,26 @@ export default function(ComposedClass, reload, adminRoute = null) {
                 })
             });
         }
-        componentWillUnmount(){
+        componentWillUnmount() {
             this._isMounted = false;
         }
         render() {
-            if(this.state.loading){
+            if (this.state.loading) {
                 return (
                     <div className="main_loader">
-                        <CircularProgress style={{color:'#999592' }} thickness={7}  />
+                        <CircularProgress style={{ color: '#999592' }} thickness={7} />
                     </div>
                 )
             }
             return (
                 <div>
-                    <ComposedClass { ...this.props } user={this.props.user} />
+                    <ComposedClass {...this.props} user={this.props.user} />
                 </div>
             );
         }
     }
 
-    function mapStateToProps(state){
+    function mapStateToProps(state) {
         return {
             user: state.user
         }
