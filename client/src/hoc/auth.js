@@ -3,12 +3,18 @@ import { connect } from  "react-redux";
 import { auth } from "../redux/actions/user_actions";
 import {CircularProgress} from "@material-ui/core";
 
-export default function(conposedClass, reload, adminRoute = null) {
+export default function(ComposedClass, reload, adminRoute = null) {
     class AuthenticationCheck extends Component {
 
         state ={
-            loading: true,
+            loading: false,
 
+        }
+
+        componentDidMount(){
+            this.props.dispatch(auth()).then(response => {
+                let user = this.props.user.userData;
+            })
         }
 
         render() {
@@ -21,7 +27,7 @@ export default function(conposedClass, reload, adminRoute = null) {
             }
             return (
                 <div>
-                    Component to display
+                    <ComposedClass { ...this.props } user={this.props.user} />
                 </div>
             );
         }
