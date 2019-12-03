@@ -1,6 +1,6 @@
 import axios from "axios";
 import { USER_SERVER } from "../../components/utils/misc";
-import { LOGIN_USER, REGISTER_USER, AUTH_USER } from "./types";
+import { LOGIN_USER, REGISTER_USER, AUTH_USER, LOGOUT_USER } from "./types";
 
 
 export function registerUser(dataToSubmit) {
@@ -26,13 +26,24 @@ export function loginUser(dataToSubmit) {
   };
 }
 
-export function auth(){
+export function auth() {
   const request = axios
-  .get(`${USER_SERVER}/auth`, {withCredentials: true})
-  .then(response => response.data)
-  .catch(error => console.log("ERR", error));
- return {
-   type: AUTH_USER,
-   payload: request
- }
+    .get(`${USER_SERVER}/auth`, { withCredentials: true })
+    .then(response => response.data)
+    .catch(error => console.log("ERR", error));
+  return {
+    type: AUTH_USER,
+    payload: request
+  }
+}
+
+export function logoutUser() {
+  const request = axios
+    .get(`${USER_SERVER}/logout`, { withCredentials: true })
+    .then(response => response.data)
+    .catch(error => console.log("ERR", error));
+  return {
+    type: LOGOUT_USER,
+    payload: request
+  }
 }
