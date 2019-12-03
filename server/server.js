@@ -3,6 +3,26 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const app = express();
+require("dotenv").config();
+
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+mongoose.Promise = global.Promise;
+mongoose.set("useCreateIndex", true);
+mongoose
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+  })
+  .then(() => console.log("Mongo DB Connected"))
+  .catch(err => console.log("Err is", err));
+
+
 //******MODELS****************//
 const { User } = require("./models/user");
 const { Brand } = require("./models/brand");
@@ -12,23 +32,9 @@ const { Product } = require("./models/product");
 //********Middleware***********//
 const { auth } = require("./middleware/auth");
 const { admin } = require("./middleware/admin");
-const app = express();
-require("dotenv").config();
 
-mongoose.Promise = global.Promise;
-mongoose.set("useCreateIndex", true);
-mongoose
-  .connect(process.env.DATABASE, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("Mongo DB Connected"))
-  .catch(err => console.log("Err is", err));
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(cookieParser());
-app.use(cors());
+
 //************PRODUCT***********//
 //Get by arrival
 //items?sortBy=createdAt&order=desc&limit=4
@@ -161,17 +167,18 @@ app.post("/api/users/login", (req, res) => {
       //generate a token
       user.generateToken((err, user) => {
         if (err) return res.status(400).send(err);
-        res
-          .cookie("x_auth", user.token)
+        res.cookie("x_auth", user.token)
           .status(200)
-          .json({ loginSuccess: true, message: "You are logged in" });
+          .json({ loginSuccess: true, message: "You are logged in", x_auth: user.token });
       });
     });
   });
 });
+
+
 app.get("/api/users/logout", auth, (req, res) => {
   User.findOneAndUpdate({ _id: req.user._id }, { token: " " }, (err, doc) => {
-    if (err) return res.json({ sucess: false, err });
+    if (err) return res.json({ success: false, err });
     return res.status(200).send({
       sucess: true,
     });

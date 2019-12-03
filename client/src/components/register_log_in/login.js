@@ -60,6 +60,9 @@ class Login extends Component {
     if (formIsValid) {
       this.props.dispatch(loginUser(dataToSubmit)).then(response => {
         if (response.payload.loginSuccess) {
+          // eslint-disable-next-line
+          const x_auth = "x_auth" + "=";
+          document.cookie = x_auth + response.payload.x_auth;
           this.props.history.push("/user/dashboard");
         } else {
           this.setState({
