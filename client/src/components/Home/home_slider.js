@@ -20,43 +20,43 @@ const HomeSlider = props => {
     ];
     const settings = {
         dots: false,
-        infinte: true,
+        infinite: true,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-        arrows: false,
-    };
+        arrows: false
+    }
 
     const generateSlides = () =>
         slides
             ? slides.map((item, i) => (
-                  <div key={i}>
-                      <div
-                          className="featured_image"
-                          style={{
-                              background: `url(${item.img})`,
-                              height: `${window.innerHeight}px`,
-                          }}
-                      >
-                          <div className="featured_action">
-                              <div className="tag title">{item.lineOne}</div>
-                              <div className="tag low_title">
-                                  {item.lineTwo}
-                              </div>
-                              <div>
-                                  <MyButton
-                                      type="default"
-                                      title={item.linkTitle}
-                                      linkTo={item.linkTo}
-                                      addStyles={{
-                                          margin: "10px 0  0 0",
-                                      }}
-                                  />
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              ))
+                <div key={i}>
+                    <div
+                        className="featured_image"
+                        style={{
+                            background: `url(${item.img})`,
+                            height: `${window.innerHeight}px`,
+                        }}
+                    >
+                        <div className="featured_action">
+                            <div className="tag title">{item.lineOne}</div>
+                            <div className="tag low_title">
+                                {item.lineTwo}
+                            </div>
+                            <div>
+                                <MyButton
+                                    type="default"
+                                    title={item.linkTitle}
+                                    linkTo={item.linkTo}
+                                    addStyles={{
+                                        margin: "10px 0  0 0",
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ))
             : null;
     return (
         <div className="featured_container">
