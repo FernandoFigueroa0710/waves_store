@@ -50,7 +50,7 @@ export function getBrands() {
 
 export function getWoods() {
     const request = axios
-        .get(`${PRODUCT_SERVER}/woods`)
+        .get(`${PRODUCT_SERVER}/wood`)
         .then(response => response.data)
         .catch(err => console.log("ERROR", err));
     return {
