@@ -9,7 +9,11 @@ import {
 export default function(state = {}, action) {
     switch (action.type) {
         case GET_PRODUCTS_TO_SHOP:
-            return { ...state, byShop: action.payload };
+            return {
+                ...state,
+                toShop: action.payload.item,
+                toShopSize: action.payload.size,
+            };
         case GET_PRODUCTS_BY_SALE:
             return { ...state, bySale: action.payload };
         case GET_PRODUCTS_BY_ARRIVAL:
