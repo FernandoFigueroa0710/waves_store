@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import PageTop from "../utils/page_top";
-import { getBrands, getWoods } from "../../redux/actions/products_actions";
+import {
+    getProductsToShop,
+    getBrands,
+    getWoods,
+} from "../../redux/actions/products_actions";
 import CollapseCheckBox from "../utils/collapseCheckBox";
 import CollapseRadio from "../utils/colapseRadio";
 import { fretz, price } from "../utils/forms/fixed_categories";
@@ -22,6 +26,14 @@ class Shop extends Component {
     componentDidMount() {
         this.props.dispatch(getBrands());
         this.props.dispatch(getWoods());
+
+        this.props.dispatch(
+            getProductsToShop(
+                this.state.skip,
+                this.state.limit,
+                this.state.filters
+            )
+        );
     }
     handlePrice = value => {
         const data = price;
