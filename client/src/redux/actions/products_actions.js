@@ -5,7 +5,9 @@ import {
     GET_PRODUCTS_BY_ARRIVAL,
     GET_BRANDS,
     GET_WOODS,
+    GET_PRODUCTS_TO_SHOP,
 } from "./types";
+import { response } from "express";
 
 export function getProductsByArrival() {
     //items?sortBy=createdAt&order=desc&limit=4
@@ -33,6 +35,31 @@ export function getProductsBySale() {
     };
 }
 
+export function getProductsToShop(
+    limit,
+    skip,
+    filters = [],
+    previousState = []
+) {
+    const data = {
+        limit,
+        skip,
+        filters,
+    };
+    const request = axios
+        .post(`${PRODUCT_SERVER}/shop`, data)
+        .then(response => {
+            return {
+                size: response.data.size,
+                items: response.data.items,
+            };
+        })
+        .catch(err => console.log("ERROR", err));
+    return {
+        type: GET_PRODUCTS_TO_SHOP,
+        payload: request,
+    };
+}
 //********************** */
 //******CATEGORIES***** */
 //********************** */
