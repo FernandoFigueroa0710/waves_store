@@ -7,9 +7,11 @@ const LoadMoreCards = props => {
             <div>
                 <CardBlockShop grid={props.grid} list={props.products} />
             </div>
-            <div className="load_more_container">
-                <span onClick={() => props.loadMore()}>Load More</span>
-            </div>
+            {props.size > 0 && props.size >= props.limit ? (
+                <div className="load_more_container">
+                    <span onClick={() => props.loadMore()}>Load More</span>
+                </div>
+            ) : null}
         </div>
     );
 };
