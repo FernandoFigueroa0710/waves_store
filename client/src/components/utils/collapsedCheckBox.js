@@ -1,21 +1,19 @@
 import React, { Component } from "react";
-
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import faAngleDown from "@fortawesome/fontawesome-free-solid/faAngleDown";
 import faAngleUp from "@fortawesome/fontawesome-free-solid/faAngleUp";
 
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
+import Checkbox from "@material-ui/core/Checkbox";
 import Collapse from "@material-ui/core/Collapse";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 
-class ColapseRadio extends Component {
+class CollapseCheckbox extends Component {
     state = {
         open: false,
-        value: "0",
+        checked: [],
     };
 
     componentDidMount() {
@@ -29,7 +27,8 @@ class ColapseRadio extends Component {
     handleClick = () => {
         this.setState({ open: !this.state.open });
     };
-    handleIconSwitch = () =>
+
+    handleAngle = () =>
         this.state.open ? (
             <FontAwesomeIcon icon={faAngleUp} className="icon" />
         ) : (
@@ -39,25 +38,46 @@ class ColapseRadio extends Component {
     renderList = () =>
         this.props.list
             ? this.props.list.map(value => (
-                  <FormControlLabel
-                      key={value._id}
-                      value={`${value._id}`}
-                      control={<Radio />}
-                      label={value.name}
-                  />
+                  <ListItem key={value._id} style={{ padding: "10px 0" }}>
+                      <ListItemText primary={value.name} />
+                      <ListItemSecondaryAction>
+                          <Checkbox
+                              color="primary"
+                              onChange={this.handleToggle(value._id)}
+                              checked={
+                                  this.state.checked.indexOf(value._id) !== -1
+                              }
+                          />
+                      </ListItemSecondaryAction>
+                  </ListItem>
               ))
             : null;
 
-    handleChange = event => {
-        this.props.handlefilters(event.target.value);
-        this.setState({
-            value: event.target.value,
-        });
+    handleToggle = value => () => {
+        const { checked } = this.state;
+        const currentIndex = checked.indexOf(value);
+        const newChecked = [...checked];
+
+        if (currentIndex === -1) {
+            newChecked.push(value);
+        } else {
+            newChecked.splice(currentIndex, 1);
+        }
+
+        this.setState(
+            {
+                checked: newChecked,
+            },
+            () => {
+                this.props.handleFilters(newChecked);
+            }
+        );
     };
+
     render() {
         return (
-            <div>
-                <List style={{ borderBottom: "1px solid #dbdbdd" }}>
+            <div className="collapse_items_wrapper">
+                <List style={{ borderBottom: "1px solid #dbdbdb" }}>
                     <ListItem
                         onClick={this.handleClick}
                         style={{ padding: "10px 23px 10px 0" }}
@@ -66,18 +86,11 @@ class ColapseRadio extends Component {
                             primary={this.props.title}
                             className="collapse_title"
                         />
-                        {this.handleIconSwitch()}
+                        {this.handleAngle()}
                     </ListItem>
                     <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-                        <List conmponent="div" disablePadding>
-                            <RadioGroup
-                                aria-label="prices"
-                                name="Prices"
-                                value={this.state.value}
-                                onChange={this.handleChange}
-                            >
-                                {this.renderList()}
-                            </RadioGroup>
+                        <List component="div" disablePadding>
+                            {this.renderList()}
                         </List>
                     </Collapse>
                 </List>
@@ -86,4 +99,4 @@ class ColapseRadio extends Component {
     }
 }
 
-export default ColapseRadio;
+export default CollapseCheckbox;

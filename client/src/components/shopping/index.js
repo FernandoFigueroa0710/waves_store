@@ -1,28 +1,36 @@
 import React, { Component } from "react";
 import PageTop from "../utils/page_top";
+
+import { frets, price } from "../utils/forms/fixed_categories";
+
+import { connect } from "react-redux";
 import {
     getProductsToShop,
     getBrands,
     getWoods,
 } from "../../redux/actions/products_actions";
-import CollapseCheckBox from "../utils/collapseCheckBox";
-import CollapseRadio from "../utils/colapseRadio";
-import { fretz, price } from "../utils/forms/fixed_categories";
 
-import { connect } from "react-redux";
+import CollapseCheckbox from "../utils/collapsedCheckBox";
+import CollapseRadio from "../utils/collapsedRadio";
+
+//import LoadmoreCards from "./loadmoreCards";
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import faBars from "@fortawesome/fontawesome-free-solid/faBars";
+import faTh from "@fortawesome/fontawesome-free-solid/faTh";
 
 class Shop extends Component {
     state = {
-        grid: " ",
+        grid: "",
         limit: 6,
         skip: 0,
         filters: {
-            brands: [],
-            fretz: [],
-            woods: [],
+            brand: [],
+            frets: [],
+            wood: [],
             price: [],
         },
     };
+
     componentDidMount() {
         this.props.dispatch(getBrands());
         this.props.dispatch(getWoods());
@@ -35,30 +43,70 @@ class Shop extends Component {
             )
         );
     }
+
     handlePrice = value => {
         const data = price;
-        let pricesArray = [];
+        let array = [];
+
         for (let key in data) {
             if (data[key]._id === parseInt(value, 10)) {
-                pricesArray = data[key].array;
+                array = data[key].array;
             }
         }
-        return pricesArray;
+        return array;
     };
 
-    handlefilters = (filters, category) => {
+    handleFilters = (filters, category) => {
         const newFilters = { ...this.state.filters };
         newFilters[category] = filters;
+
         if (category === "price") {
             let priceValues = this.handlePrice(filters);
             newFilters[category] = priceValues;
         }
+
+        this.showFilteredResults(newFilters);
         this.setState({
             filters: newFilters,
         });
     };
+
+    showFilteredResults = filters => {
+        this.props
+            .dispatch(getProductsToShop(0, this.state.limit, filters))
+            .then(() => {
+                this.setState({
+                    skip: 0,
+                });
+            });
+    };
+
+    // loadMoreCards = () => {
+    //     let skip = this.state.skip + this.state.limit;
+
+    //     this.props
+    //         .dispatch(
+    //             getProductsToShop(
+    //                 skip,
+    //                 this.state.limit,
+    //                 this.state.filters,
+    //                 this.props.products.toShop
+    //             )
+    //         )
+    //         .then(() => {
+    //             this.setState({
+    //                 skip,
+    //             });
+    //         });
+    // };
+
+    handleGrid = () => {
+        this.setState({
+            grid: !this.state.grid ? "grid_bars" : "",
+        });
+    };
+
     render() {
-        console.log("STATE", this.state);
         const products = this.props.products;
         return (
             <div>
@@ -66,40 +114,70 @@ class Shop extends Component {
                 <div className="container">
                     <div className="shop_wrapper">
                         <div className="left">
-                            <CollapseCheckBox
+                            <CollapseCheckbox
                                 initState={true}
                                 title="Brands"
                                 list={products.brands}
-                                handlefilters={filters =>
-                                    this.handlefilters(filters, "brands")
+                                handleFilters={filters =>
+                                    this.handleFilters(filters, "brand")
                                 }
                             />
-                            <CollapseCheckBox
+                            <CollapseCheckbox
                                 initState={false}
-                                title="Fretz"
-                                list={fretz}
-                                handlefilters={filters =>
-                                    this.handlefilters(filters, "Fretz")
+                                title="Frets"
+                                list={frets}
+                                handleFilters={filters =>
+                                    this.handleFilters(filters, "frets")
                                 }
                             />
-                            <CollapseCheckBox
+                            <CollapseCheckbox
                                 initState={false}
-                                title="Woods"
+                                title="Wood"
                                 list={products.woods}
-                                handlefilters={filters =>
-                                    this.handlefilters(filters, "woods")
+                                handleFilters={filters =>
+                                    this.handleFilters(filters, "wood")
                                 }
                             />
                             <CollapseRadio
                                 initState={true}
                                 title="Price"
                                 list={price}
-                                handlefilters={filters =>
-                                    this.handlefilters(filters, "price")
+                                handleFilters={filters =>
+                                    this.handleFilters(filters, "price")
                                 }
                             />
                         </div>
-                        <div className="right">right1</div>
+                        <div className="right">
+                            <div className="shop_options">
+                                <div className="shop_grids clear">
+                                    <div
+                                        className={`grid_btn ${
+                                            this.state.grid ? "" : "active"
+                                        }`}
+                                        onClick={() => this.handleGrid()}
+                                    >
+                                        <FontAwesomeIcon icon={faTh} />
+                                    </div>
+                                    <div
+                                        className={`grid_btn ${
+                                            !this.state.grid ? "" : "active"
+                                        }`}
+                                        onClick={() => this.handleGrid()}
+                                    >
+                                        <FontAwesomeIcon icon={faBars} />
+                                    </div>
+                                </div>
+                            </div>
+                            {/* <div style={{ clear: "both" }}>
+                                <LoadmoreCards
+                                    grid={this.state.grid}
+                                    limit={this.state.limit}
+                                    size={products.toShopSize}
+                                    products={products.toShop}
+                                    loadMore={() => this.loadMoreCards()}
+                                />
+                            </div> */}
+                        </div>
                     </div>
                 </div>
             </div>

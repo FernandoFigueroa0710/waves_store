@@ -46,7 +46,7 @@ export function getProductsToShop(
         filters,
     };
     const request = axios
-        .post(`${PRODUCTS_SERVER}/shop`, data)
+        .post(`${PRODUCT_SERVER}/shop`, data)
         .then(response => {
             return {
                 size: response.data.size,
