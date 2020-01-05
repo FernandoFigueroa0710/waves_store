@@ -13,7 +13,7 @@ import {
 import CollapseCheckbox from "../utils/collapsedCheckBox";
 import CollapseRadio from "../utils/collapsedRadio";
 
-//import LoadmoreCards from "./loadmoreCards";
+import LoadmoreCards from "./loadMoreCards";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import faBars from "@fortawesome/fontawesome-free-solid/faBars";
 import faTh from "@fortawesome/fontawesome-free-solid/faTh";
@@ -81,24 +81,24 @@ class Shop extends Component {
             });
     };
 
-    // loadMoreCards = () => {
-    //     let skip = this.state.skip + this.state.limit;
+    loadMoreCards = () => {
+        let skip = this.state.skip + this.state.limit;
 
-    //     this.props
-    //         .dispatch(
-    //             getProductsToShop(
-    //                 skip,
-    //                 this.state.limit,
-    //                 this.state.filters,
-    //                 this.props.products.toShop
-    //             )
-    //         )
-    //         .then(() => {
-    //             this.setState({
-    //                 skip,
-    //             });
-    //         });
-    // };
+        this.props
+            .dispatch(
+                getProductsToShop(
+                    skip,
+                    this.state.limit,
+                    this.state.filters,
+                    this.props.products.toShop
+                )
+            )
+            .then(() => {
+                this.setState({
+                    skip,
+                });
+            });
+    };
 
     handleGrid = () => {
         this.setState({
@@ -168,7 +168,7 @@ class Shop extends Component {
                                     </div>
                                 </div>
                             </div>
-                            {/* <div style={{ clear: "both" }}>
+                            <div style={{ clear: "both" }}>
                                 <LoadmoreCards
                                     grid={this.state.grid}
                                     limit={this.state.limit}
@@ -176,7 +176,7 @@ class Shop extends Component {
                                     products={products.toShop}
                                     loadMore={() => this.loadMoreCards()}
                                 />
-                            </div> */}
+                            </div>
                         </div>
                     </div>
                 </div>
