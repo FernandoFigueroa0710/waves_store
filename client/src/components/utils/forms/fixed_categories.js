@@ -1,4 +1,4 @@
-const fretz = [
+const frets = [
     {
         _id: 20,
         name: 20,
@@ -50,4 +50,4 @@ const price = [
     },
 ];
 
-export { fretz, price };
+export { frets, price };

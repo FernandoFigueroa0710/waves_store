@@ -40,12 +40,13 @@ const { admin } = require("./middleware/admin");
 // by sell
 //items?sortyBy=sold&order=desc&limit100&skip=5
 
-app.post("/api/products/shop", (req, res) => {
+app.post("/api/product/shop", (req, res) => {
     let order = req.body.order ? req.body.order : "desc";
     let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
-    let limit = req.body.limit ? parseInt(req.body.limit) : 30;
-    let skip = req.body.skip ? parseInt(req.body.skip) : 0;
+    let limit = req.body.limit ? parseInt(req.body.limit) : 100;
+    let skip = parseInt(req.body.skip);
     let findArgs = {};
+
     for (let key in req.body.filters) {
         if (req.body.filters[key].length > 0) {
             if (key === "price") {
@@ -58,17 +59,20 @@ app.post("/api/products/shop", (req, res) => {
             }
         }
     }
+
+    findArgs["publish"] = true;
+
     Product.find(findArgs)
         .populate("brand")
         .populate("wood")
         .sort([[sortBy, order]])
         .skip(skip)
         .limit(limit)
-        .exec((err, items) => {
+        .exec((err, articles) => {
             if (err) return res.status(400).send(err);
             res.status(200).json({
-                size: items.length,
-                articles: items,
+                size: articles.length,
+                articles,
             });
         });
 });
