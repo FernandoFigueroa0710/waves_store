@@ -8,7 +8,6 @@ const CardBlockShop = props => {
                   <Card key={card._id} grid={props.grid} {...card} />
               ))
             : null;
-    console.log(props);
     return (
         <div className="card_block_shop">
             <div>
