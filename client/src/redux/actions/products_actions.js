@@ -54,7 +54,6 @@ export function getProductsToShop(
             };
         })
         .catch(err => console.log("ERROR", err));
-    console.log("Action response", request);
     return {
         type: GET_PRODUCTS_TO_SHOP,
         payload: request,
