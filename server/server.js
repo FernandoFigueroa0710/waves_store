@@ -66,7 +66,10 @@ app.post("/api/products/shop", (req, res) => {
         .limit(limit)
         .exec((err, items) => {
             if (err) return res.status(400).send(err);
-            res.status(200).send(items);
+            res.status(200).json({
+                size: items.length,
+                articles: items,
+            });
         });
 });
 

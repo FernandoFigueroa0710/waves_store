@@ -58,7 +58,6 @@ class Shop extends Component {
         });
     };
     render() {
-        console.log("STATE", this.state);
         const products = this.props.products;
         return (
             <div>
