@@ -4,12 +4,18 @@ import DashboardLayout from "../../../hoc/dashboardLayout";
 import FormField from "../../utils/forms/formField";
 import {
     update,
-    generatData,
+    generateData,
     isFormValid,
+    resetFields,
     populateOptionFields,
 } from "../../utils/forms/formActions";
 import { connect } from "react-redux";
-import { getBrands, getWoods } from "../../../redux/actions/products_actions";
+import {
+    getBrands,
+    getWoods,
+    addProduct,
+    clearProduct,
+} from "../../../redux/actions/products_actions";
 
 class AddProduct extends Component {
     state = {
@@ -180,6 +186,51 @@ class AddProduct extends Component {
         },
     };
 
+    resetFieldsHandler = () => {
+        const newFormData = resetFields(this.state.formData, "products");
+        this.setState({
+            formSuccess: true,
+            formData: newFormData,
+        });
+        setTimeout(() => {
+            this.setState(
+                {
+                    formSuccess: false,
+                },
+                () => this.props.dispatch(clearProduct())
+            );
+        }, 3000);
+    };
+    updateForm = element => {
+        const newFormData = update(element, this.state.formData, "products");
+        this.setState({
+            formError: false,
+            formData: newFormData,
+        });
+    };
+    submitForm = event => {
+        event.preventDefault();
+
+        let dataToSubmit = generateData(this.state.formData, "products");
+
+        let formIsValid = isFormValid(this.state.formData, "products");
+
+        if (formIsValid) {
+            this.props.dispatch(addProduct(dataToSubmit)).then(() => {
+                if (this.props.products.addProduct.success) {
+                    this.resetFieldsHandler();
+                } else {
+                    this.setState({
+                        formError: true,
+                    });
+                }
+            });
+        } else {
+            this.setState({
+                formError: true,
+            });
+        }
+    };
     updateFields = newFormData => {
         this.setState({
             formData: newFormData,

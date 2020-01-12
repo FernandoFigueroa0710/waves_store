@@ -65,3 +65,14 @@ export const populateOptionFields = (formData, arrayData = [], field) => {
     newFormData[field].config.options = newarray;
     return newFormData;
 };
+
+export const resetFields = (formData, formName) => {
+    const newFormData = { ...formData };
+    for (let key in newFormData) {
+        newFormData[key].value = "";
+        newFormData[key].valid = "";
+        newFormData[key].touched = false;
+        newFormData[key].validationMessage = "";
+    }
+    return newFormData;
+};
