@@ -5,6 +5,7 @@ import Home from "./components/Home/index";
 import RegisterLogIn from "./components/register_log_in/index";
 import Register from "./components/register_log_in/register";
 import Userdashboard from "./components/User/index";
+import AddProduct from "./components/User/admin/add_products";
 import Shop from "./components/shopping/index";
 import Auth from "./hoc/auth";
 
@@ -16,7 +17,10 @@ const Routes = () => {
                     path="/user/dashboard"
                     component={Auth(Userdashboard, true)}
                 />
-
+                <Route
+                    path="/admin/add_product"
+                    component={Auth(AddProduct, true)}
+                />
                 <Route path="/register" component={Auth(Register, false)} />
                 <Route
                     path="/register_log_in"
