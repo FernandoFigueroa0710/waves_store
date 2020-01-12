@@ -46,13 +46,13 @@ const DashboardLayout = props => {
                     <h2>My account</h2>
                     <div className="links">{generateLinks(links)}</div>
                     {props.user.userData.isAdmin ? (
-                        <div className="user_left_nav">
+                        <div>
                             <h2>Admin</h2>
                             <div className="links">{generateLinks(admin)}</div>
                         </div>
                     ) : null}
                 </div>
-                <div className="user_right_nav">{props.children}</div>
+                <div className="user_right">{props.children}</div>
             </div>
         </div>
     );
