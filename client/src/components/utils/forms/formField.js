@@ -33,6 +33,24 @@ const FormField = ({ formData, change, id }) => {
                     </div>
                 );
                 break;
+            case "textarea":
+                formTemplate = (
+                    <div className="formBlock">
+                        {formData.showLabel ? (
+                            <div className="label_inputs">
+                                {formData.config.label}
+                            </div>
+                        ) : null}
+                        <textarea
+                            {...formData.config}
+                            value={formData.value}
+                            onBlur={event => change({ event, id, blur: true })}
+                            onChange={event => change({ event, id })}
+                        />
+                        >{showError()}
+                    </div>
+                );
+                break;
             default:
                 formTemplate = null;
         }
