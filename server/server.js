@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
@@ -229,6 +230,16 @@ let storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}_${file.originalname}`);
+    },
+    fileFilter: (req, file, cb) => {
+        const ext = path.extname(file.originalname);
+        if (ext !== ".jpg" && ext !== ".png") {
+            return cb(
+                res.status(400).end("Only jpg and png are allowed!"),
+                false
+            );
+        }
+        cb(null, true);
     },
 });
 const upload = multer({ storage: storage }).single("file");
