@@ -7,6 +7,7 @@ import Register from "./components/register_log_in/register";
 import Userdashboard from "./components/User/index";
 import AddProduct from "./components/User/admin/add_products";
 import Shop from "./components/shopping/index";
+import AddFile from "./components/User/admin/add_file";
 import Auth from "./hoc/auth";
 
 const Routes = () => {
@@ -20,6 +21,10 @@ const Routes = () => {
                 <Route
                     path="/admin/add_product"
                     component={Auth(AddProduct, true)}
+                />
+                <Route
+                    path="/admin/upload_file"
+                    component={Auth(AddFile, true)}
                 />
                 <Route path="/register" component={Auth(Register, false)} />
                 <Route

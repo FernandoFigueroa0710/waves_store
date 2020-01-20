@@ -27,8 +27,12 @@ const admin = [
         linkTo: "/admin/add_product",
     },
     {
-        name: " Manage categories",
+        name: "Manage categories",
         linkTo: "/admin/manage_categories",
+    },
+    {
+        name: "Upload File",
+        linkTo: "/admin/upload_file",
     },
 ];
 

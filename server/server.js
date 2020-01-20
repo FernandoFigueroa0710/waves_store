@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
+const multer = require("multer");
 const cors = require("cors");
 const app = express();
 require("dotenv").config();
@@ -217,6 +218,27 @@ app.post("/api/users/login", (req, res) => {
                     });
             });
         });
+    });
+});
+
+//************UPLOAD IMAGES**************** *//
+
+let storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads");
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}_${file.originalname}`);
+    },
+});
+const upload = multer({ storage: storage }).single("file");
+
+app.post("/api/users/uploadfile", (req, res) => {
+    upload(req, res, err => {
+        if (err) {
+            return res.json({ success: false, err });
+        }
+        return res.json({ success: true });
     });
 });
 
