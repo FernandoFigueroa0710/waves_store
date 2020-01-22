@@ -1,7 +1,10 @@
 const express = require("express");
+const path = require("path");
+const fs = require("fs");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
+const multer = require("multer");
 const cors = require("cors");
 const app = express();
 require("dotenv").config();
@@ -217,6 +220,44 @@ app.post("/api/users/login", (req, res) => {
                     });
             });
         });
+    });
+});
+
+//************UPLOAD IMAGES**************** *//
+
+let storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads");
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}_${file.originalname}`);
+    },
+    fileFilter: (req, file, cb) => {
+        const ext = path.extname(file.originalname);
+        if (ext !== ".jpg" && ext !== ".png") {
+            return cb(
+                res.status(400).end("Only jpg and png are allowed!"),
+                false
+            );
+        }
+        cb(null, true);
+    },
+});
+const upload = multer({ storage: storage }).single("file");
+
+app.post("/api/users/uploadfile", (req, res) => {
+    upload(req, res, err => {
+        if (err) {
+            return res.json({ success: false, err });
+        }
+        return res.json({ success: true });
+    });
+});
+
+app.get("/api/users/admin_files", (req, res) => {
+    const dir = path.resolve(".") + "/uploads";
+    fs.readdir(dir, (err, items) => {
+        return res.status(200).send(items);
     });
 });
 
