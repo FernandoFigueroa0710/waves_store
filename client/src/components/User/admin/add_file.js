@@ -47,6 +47,21 @@ class AddFile extends Component {
                 }
             });
     };
+    showFileList = () =>
+        this.state.files
+            ? this.state.files.map((item, i) => (
+                  <li key={i}>
+                      <Link to={`${USER_SERVER}/download/${item}`}>{item}</Link>
+                  </li>
+              ))
+            : null;
+    componentDidMount() {
+        axios.get(`${USER_SERVER}/admin_files`).then(response => {
+            this.setState({
+                files: response.data,
+            });
+        });
+    }
 
     render() {
         return (
@@ -95,7 +110,9 @@ class AddFile extends Component {
                                         </div>
                                     ) : null}
                                     <hr />
-                                    <div>uploaded files</div>
+                                    <div>
+                                        <ul>{this.showFileList()}</ul>
+                                    </div>
                                 </div>
                             </div>
                         </section>

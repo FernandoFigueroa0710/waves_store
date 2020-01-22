@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
@@ -250,6 +251,13 @@ app.post("/api/users/uploadfile", (req, res) => {
             return res.json({ success: false, err });
         }
         return res.json({ success: true });
+    });
+});
+
+app.get("/api/users/admin_files", (req, res) => {
+    const dir = path.resolve(".") + "/uploads";
+    fs.readdir(dir, (err, items) => {
+        return res.status(200).send(items);
     });
 });
 
