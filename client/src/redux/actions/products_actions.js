@@ -96,6 +96,8 @@ export function getBrands() {
     };
 }
 
+export function addBrand() {}
+
 export function getWoods() {
     const request = axios
         .get(`${PRODUCT_SERVER}/wood`)
