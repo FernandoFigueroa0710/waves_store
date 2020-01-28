@@ -5,7 +5,9 @@ import {
     GET_PRODUCTS_BY_ARRIVAL,
     GET_PRODUCTS_TO_SHOP,
     GET_BRANDS,
+    ADD_BRAND,
     GET_WOODS,
+    ADD_WOOD,
     ADD_PRODUCT,
     CLEAR_PRODUCT,
 } from "./types";
@@ -96,6 +98,25 @@ export function getBrands() {
     };
 }
 
+export function addBrand(dataToSubmit, existingBrands) {
+    const request = axios
+        .post(`${PRODUCT_SERVER}/brand`, dataToSubmit, {
+            withCredentials: true,
+        })
+        .then(response => {
+            let brands = [...existingBrands, response.data.brand];
+            return {
+                sucess: response.data.sucess,
+                brands,
+            };
+        })
+        .catch(err => console.log("ERR", err));
+    return {
+        type: ADD_BRAND,
+        payload: request,
+    };
+}
+
 export function getWoods() {
     const request = axios
         .get(`${PRODUCT_SERVER}/wood`)
@@ -103,6 +124,24 @@ export function getWoods() {
         .catch(err => console.log("ERROR", err));
     return {
         type: GET_WOODS,
+        payload: request,
+    };
+}
+
+export function addWood(dataToSubmit, existingWoods) {
+    const request = axios
+        .post(`${PRODUCT_SERVER}/wood`, dataToSubmit, { withCredentials: true })
+        .then(response => {
+            let woods = [...existingWoods, response.data.wood];
+            return {
+                success: response.data.success,
+                woods,
+            };
+        })
+        .catch(err => console.log("ERR", err));
+
+    return {
+        type: ADD_WOOD,
         payload: request,
     };
 }
