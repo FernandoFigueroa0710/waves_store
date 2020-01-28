@@ -7,6 +7,7 @@ import {
     GET_BRANDS,
     ADD_BRAND,
     GET_WOODS,
+    ADD_WOOD,
     ADD_PRODUCT,
     CLEAR_PRODUCT,
 } from "./types";
@@ -123,6 +124,24 @@ export function getWoods() {
         .catch(err => console.log("ERROR", err));
     return {
         type: GET_WOODS,
+        payload: request,
+    };
+}
+
+export function addWood(dataToSubmit, existingWoods) {
+    const request = axios
+        .post(`${PRODUCT_SERVER}/wood`, dataToSubmit, { withCredentials: true })
+        .then(response => {
+            let woods = [...existingWoods, response.data.wood];
+            return {
+                success: response.data.success,
+                woods,
+            };
+        })
+        .catch(err => console.log("ERR", err));
+
+    return {
+        type: ADD_WOOD,
         payload: request,
     };
 }
