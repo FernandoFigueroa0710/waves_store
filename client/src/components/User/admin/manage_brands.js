@@ -31,6 +31,7 @@ class ManageBrands extends Component {
             },
         },
     };
+
     showBrands = () =>
         this.props.products.brands
             ? this.props.products.brands.map((brand, i) => (
@@ -49,6 +50,15 @@ class ManageBrands extends Component {
             formData: newFormData,
         });
     };
+
+    resetFieldsHandler = () => {
+        const newFormData = resetFields(this.state.formData, "brands");
+        this.setState({
+            formSuccess: true,
+            formData: newFormData,
+        });
+    };
+
     submitForm = event => {
         event.preventDefault();
 
@@ -56,16 +66,20 @@ class ManageBrands extends Component {
 
         let formIsValid = isFormValid(this.state.formData, "brands");
 
+        let existingBrands = this.props.products.brands;
+
         if (formIsValid) {
-            this.props.dispatch(addBrand(dataToSubmit)).then(() => {
-                if (this.props.products.addProduct.success) {
-                    this.resetFieldsHandler();
-                } else {
-                    this.setState({
-                        formError: true,
-                    });
-                }
-            });
+            this.props
+                .dispatch(addBrand(dataToSubmit, existingBrands))
+                .then(response => {
+                    if (response.payload.sucess) {
+                        this.resetFieldsHandler();
+                    } else {
+                        this.setState({
+                            formError: true,
+                        });
+                    }
+                });
         } else {
             this.setState({
                 formError: true,

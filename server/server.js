@@ -133,7 +133,7 @@ app.post("/api/product/wood", auth, admin, (req, res) => {
     const wood = new Wood(req.body);
 
     wood.save((err, doc) => {
-        if (err) return res.jason({ success: false, err });
+        if (err) return res.json({ success: false, err });
         res.status(200).json({
             success: true,
             wood: doc,
@@ -152,7 +152,7 @@ app.post("/api/product/brand", auth, admin, (req, res) => {
     const brand = new Brand(req.body);
 
     brand.save((err, doc) => {
-        if (err) return res.jason({ success: false, err });
+        if (err) return res.json({ success: false, err });
         res.status(200).json({
             sucess: true,
             brand: doc,
