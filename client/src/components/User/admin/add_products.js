@@ -268,8 +268,15 @@ class AddProduct extends Component {
             this.updateFields(newFormData);
         });
     }
-    imagesHandler = () => {};
+    imagesHandler = images => {
+        const newFormData = { ...this.state.formData };
+        newFormData["images"].value = images;
+        newFormData["images"].valid = true;
 
+        this.setState({
+            formData: newFormData,
+        });
+    };
     render() {
         return (
             <DashboardLayout>
