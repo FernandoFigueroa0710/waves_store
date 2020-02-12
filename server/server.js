@@ -39,8 +39,8 @@ const { Wood } = require("./models/wood");
 const { Product } = require("./models/product");
 
 //********Middleware***********//
-const { auth } = require("./middleware/auth").default;
-const { admin } = require("./middleware/admin").default;
+const { auth } = require("./middleware/auth");
+const { admin } = require("./middleware/admin");
 
 //************PRODUCTS***********//
 //Get products to shop filters
