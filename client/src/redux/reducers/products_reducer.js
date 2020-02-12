@@ -2,6 +2,8 @@ import {
     GET_PRODUCTS_BY_SALE,
     GET_PRODUCTS_BY_ARRIVAL,
     GET_PRODUCTS_TO_SHOP,
+    GET_PRODUCT_DETAIL,
+    CLEAR_PRODUCT_DETAIL,
     GET_BRANDS,
     ADD_BRAND,
     GET_WOODS,
@@ -40,6 +42,16 @@ export default function(state = {}, action) {
             };
         case ADD_PRODUCT:
             return { ...state, addProduct: action.payload };
+        case GET_PRODUCT_DETAIL:
+            return {
+                ...state,
+                productDetail: action.payload,
+            };
+        case CLEAR_PRODUCT_DETAIL:
+            return {
+                ...state,
+                productDetail: action.payload,
+            };
         case CLEAR_PRODUCT:
             return { ...state, addProduct: action.payload };
         default:

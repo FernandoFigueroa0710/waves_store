@@ -9,6 +9,7 @@ import AddProduct from "./components/User/admin/add_products";
 import Shop from "./components/shopping/index";
 import AddFile from "./components/User/admin/add_file";
 import ManageCategories from "./components/User/admin/manage_categories";
+import ProductDetail from "./components/product/index";
 import Auth from "./hoc/auth";
 
 const Routes = () => {
@@ -30,6 +31,10 @@ const Routes = () => {
                 <Route
                     path="/admin/manage_categories"
                     component={Auth(ManageCategories, true)}
+                />
+                <Route
+                    path="/product_detail/:id"
+                    component={Auth(ProductDetail, null)}
                 />
                 <Route path="/register" component={Auth(Register, false)} />
                 <Route
