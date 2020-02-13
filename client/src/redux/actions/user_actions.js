@@ -45,7 +45,6 @@ export function auth() {
 export function addToCart(_id) {
     return {
         type: ADD_TO_CART,
-        payload: request,
     };
 }
 export function logoutUser() {
