@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-
+import ImageLightBox from "../utils/lightbox";
 class ProductImages extends Component {
     state = {
-        lightbox: false,
+        lightboxOpen: false,
         impagePos: 0,
         lightboximages: [],
     };
@@ -15,7 +15,20 @@ class ProductImages extends Component {
             this.setState({ lightboximages });
         }
     }
-    handleLightbox = () => {};
+    handleLightbox = position => {
+        if (this.state.lightboximages.length > 0) {
+            this.setState({
+                lightboxOpen: true,
+                impagePos: position,
+            });
+        }
+    };
+
+    handleLightboxClose = () => {
+        this.setState({
+            lightboxOpen: false,
+        });
+    };
     showThumbs = () =>
         this.state.lightboximages.map((image, i) =>
             i > 0 ? (
@@ -36,6 +49,7 @@ class ProductImages extends Component {
     };
     render() {
         const { productDetail } = this.props;
+
         return (
             <div className="product_image_container">
                 <div className="main_pic">
@@ -51,6 +65,15 @@ class ProductImages extends Component {
                 <div className="main_thumbs">
                     {this.showThumbs(productDetail.images)}
                 </div>
+                {this.state.lightboxOpen ? (
+                    <ImageLightBox
+                        id={productDetail.id}
+                        images={this.state.lightboximages}
+                        open={this.state.open}
+                        pos={this.state.impagePos}
+                        onClose={() => this.handleLightboxClose()}
+                    />
+                ) : null}
             </div>
         );
     }
