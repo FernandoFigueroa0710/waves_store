@@ -43,8 +43,14 @@ export function auth() {
 }
 
 export function addToCart(_id) {
+    const authRequest = axios.create({ withCredentials: true }); //an instance of axios with authorization
+    authRequest
+        .post(`${USER_SERVER}/add_toCart?productId=${_id}`)
+        .then(response => response.data)
+        .catch(err => console.log("ERR", err));
     return {
         type: ADD_TO_CART,
+        payload: authRequest,
     };
 }
 export function logoutUser() {
