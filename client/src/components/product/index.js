@@ -18,6 +18,7 @@ class ProductDetail extends Component {
     }
     addToCarthandler = () => {};
     render() {
+        const id = this.props.match.params.id;
         const { productDetail } = this.props.products;
         return (
             <div>
