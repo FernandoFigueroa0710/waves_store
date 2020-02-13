@@ -6,6 +6,8 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const multer = require("multer");
 const cors = require("cors");
+const formidable = require("express-formidable");
+const cloudinary = require("cloudinary");
 const app = express();
 require("dotenv").config();
 
@@ -25,6 +27,11 @@ mongoose
     .then(() => console.log("Mongo DB Connected"))
     .catch(err => console.log("Err is", err));
 
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET,
+});
 //******MODELS****************//
 const { User } = require("./models/user");
 const { Brand } = require("./models/brand");
@@ -210,7 +217,9 @@ app.post("/api/users/login", (req, res) => {
                 });
             //generate a token
             user.generateToken((err, user) => {
-                if (err) return res.status(400).send(err);
+                if (err) {
+                    return res.status(400).send(err);
+                }
                 res.cookie("x_auth", user.token)
                     .status(200)
                     .json({
@@ -261,6 +270,21 @@ app.get("/api/users/admin_files", (req, res) => {
     });
 });
 
+app.post("/api/users/uploadimage", formidable(), (req, res) => {
+    cloudinary.uploader.upload(
+        req.files.file.path,
+        result => {
+            res.status(200).send({
+                public_id: result.public_id,
+                url: result.url,
+            });
+        },
+        {
+            public_id: `${Date.now()}`,
+            resource_type: "auto",
+        }
+    );
+});
 app.get("/api/users/logout", auth, (req, res) => {
     User.findOneAndUpdate({ _id: req.user._id }, { token: " " }, (err, doc) => {
         if (err) return res.json({ success: false, err });

@@ -4,6 +4,8 @@ import {
     GET_PRODUCTS_BY_SALE,
     GET_PRODUCTS_BY_ARRIVAL,
     GET_PRODUCTS_TO_SHOP,
+    GET_PRODUCT_DETAIL,
+    CLEAR_PRODUCT_DETAIL,
     GET_BRANDS,
     ADD_BRAND,
     GET_WOODS,
@@ -11,6 +13,24 @@ import {
     ADD_PRODUCT,
     CLEAR_PRODUCT,
 } from "./types";
+
+export function getProductDetail(id) {
+    const request = axios
+        .get(`${PRODUCT_SERVER}/item_by_id?id=${id}&type=single`)
+        .then(response => response.data[0])
+        .catch(err => console.log("Err", err));
+    return {
+        type: GET_PRODUCT_DETAIL,
+        payload: request,
+    };
+}
+
+export function clearProductDetail() {
+    return {
+        type: CLEAR_PRODUCT_DETAIL,
+        payload: "",
+    };
+}
 
 export function getProductsByArrival() {
     //items?sortBy=createdAt&order=desc&limit=4
