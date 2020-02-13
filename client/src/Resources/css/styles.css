@@ -796,7 +796,7 @@ footer .business_nfo .nfo {
     flex-grow: 1;
 }
 
-.user_product_block .item .image {
+.user_product_block .image {
     height: 125px;
     background-size: contain !important;
     background-repeat: no-repeat !important;

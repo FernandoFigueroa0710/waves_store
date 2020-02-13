@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import DashboardLayout from "../../hoc/dashboardLayout";
-
+import CartItemBlock from "../utils/user_cart_items/cart_item_block.component";
 import { connect } from "react-redux";
 import { getCartItems } from "../../redux/actions/user_actions";
 
@@ -18,20 +18,25 @@ class UserCart extends Component {
 
     componentDidMount() {
         let cartItems = [];
-        let userCart = this.props.user.cart;
+        let userCart = this.props.user.userData.cart;
         if (userCart && userCart.length > 0) {
-            userCart.forEach(item => {
-                cartItems.push(item.id);
-            });
+            cartItems = userCart.map(item => item.id);
         }
         this.props.dispatch(getCartItems(cartItems, userCart));
     }
-
+    removeFromCart = () => {};
     render() {
         return (
             <DashboardLayout>
                 <div>
-                    <div>User cart </div>
+                    <h1>My cart</h1>
+                    <div className="user_cart">
+                        <CartItemBlock
+                            userInfo={this.props.user}
+                            type="cart"
+                            removeItem={id => this.removeFromCart(id)}
+                        />
+                    </div>
                 </div>
             </DashboardLayout>
         );
@@ -40,7 +45,7 @@ class UserCart extends Component {
 
 const mapStateToProps = state => {
     return {
-        user: state.user.userData,
+        user: state.user,
     };
 };
 
