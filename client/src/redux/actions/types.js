@@ -3,6 +3,7 @@ export const REGISTER_USER = "register_user";
 export const AUTH_USER = "auth_user";
 export const LOGOUT_USER = "logout_user";
 
+export const GET_USER_CART_ITEMS = "get_user_cart_items";
 export const GET_PRODUCTS_BY_SALE = "get_products_by_sale";
 export const GET_PRODUCTS_BY_ARRIVAL = "get_products_by_arrival";
 export const GET_PRODUCTS_TO_SHOP = "get_products_to_shop";

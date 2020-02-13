@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import DashboardLayout from "../../hoc/dashboardLayout";
 
 import { connect } from "react-redux";
+import { getCartItems } from "../../redux/actions/user_actions";
 
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import faFrown from "@fortawesome/fontawesome-free-solid/faFrown";
@@ -16,13 +17,14 @@ class UserCart extends Component {
     };
 
     componentDidMount() {
-        let cartItem = [];
-        let user = this.props.user;
-        if (user.userData.cart && user.userData.cart.length > 0) {
-            user.userData.cart.forEach(item => {
-                cartItem.push(item.id);
+        let cartItems = [];
+        let userCart = this.props.user.cart;
+        if (userCart && userCart.length > 0) {
+            userCart.forEach(item => {
+                cartItems.push(item.id);
             });
         }
+        this.props.dispatch(getCartItems(cartItems, userCart));
     }
 
     render() {
