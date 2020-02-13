@@ -21,9 +21,37 @@ class UserCart extends Component {
         let userCart = this.props.user.userData.cart;
         if (userCart && userCart.length > 0) {
             cartItems = userCart.map(item => item.id);
+            this.props
+                .dispatch(getCartItems(cartItems, userCart))
+                .then(response => {
+                    if (this.props.user.cartDetail.length > 0) {
+                        this.calculateTotalInItems(this.props.user.cartDetail);
+                    }
+                });
         }
-        this.props.dispatch(getCartItems(cartItems, userCart));
     }
+    calculateTotalInItems(items) {
+        let totalCart = 0;
+        totalCart = items.reduce((acc, item) => {
+            return acc + item.price * item.quantity;
+        }, 0);
+        this.setState({
+            showTotal: true,
+            total: parseInt(totalCart),
+        });
+    }
+    showSuccessMessage = () => (
+        <div className="cart_no_items">
+            <div>{} Than you for your purchase!</div>
+            <FontAwesomeIcon icon={faSmile} />
+        </div>
+    );
+    showEmptyCartMessage = () => (
+        <div className="cart_no_items">
+            <div>{} You have no items in your cart</div>
+            <FontAwesomeIcon icon={faFrown} />
+        </div>
+    );
     removeFromCart = () => {};
     render() {
         return (
@@ -36,7 +64,19 @@ class UserCart extends Component {
                             type="cart"
                             removeItem={id => this.removeFromCart(id)}
                         />
+                        {this.state.showTotal ? (
+                            <div className="user_cart_sum">
+                                <div>Total amount: ${this.state.total}</div>
+                            </div>
+                        ) : this.state.showSuccess ? (
+                            this.showSuccessMessage()
+                        ) : (
+                            this.showEmptyCartMessage()
+                        )}
                     </div>
+                    {this.state.showTotal ? (
+                        <div className="paypal_bottom_container">paypal</div>
+                    ) : null}
                 </div>
             </DashboardLayout>
         );

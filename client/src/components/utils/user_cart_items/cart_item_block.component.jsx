@@ -48,9 +48,7 @@ const CartItemBlock = ({ userInfo, removeItem }) => {
                 </div>
             ))
         ) : (
-            <div>
-                <h1>No items in your cart</h1>
-            </div>
+            <div>&nbsp;</div>
         );
     return <div>{(this, renderCartItems())}</div>;
 };
