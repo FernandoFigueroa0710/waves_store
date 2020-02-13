@@ -8,6 +8,7 @@ import Userdashboard from "./components/User/index";
 import AddProduct from "./components/User/admin/add_products";
 import Shop from "./components/shopping/index";
 import AddFile from "./components/User/admin/add_file";
+import UserCart from "./components/User/cart.component";
 import ManageCategories from "./components/User/admin/manage_categories";
 import ProductDetail from "./components/product/index";
 import Auth from "./hoc/auth";
@@ -20,6 +21,7 @@ const Routes = () => {
                     path="/user/dashboard"
                     component={Auth(Userdashboard, true)}
                 />
+                <Route path="/user/cart" component={Auth(UserCart, true)} />
                 <Route
                     path="/admin/add_product"
                     component={Auth(AddProduct, true)}
