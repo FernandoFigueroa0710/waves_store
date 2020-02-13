@@ -29,7 +29,9 @@ class ProductDetail extends Component {
                         <div className="product_detail_wrapper">
                             <div className="left">
                                 <div style={{ width: "500px" }}>
-                                    <ProductImages />
+                                    <ProductImages
+                                        productDetail={productDetail}
+                                    />
                                 </div>
                             </div>
                             <div className="right">
