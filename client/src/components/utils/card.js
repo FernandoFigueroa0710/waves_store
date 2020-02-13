@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { addToCart } from "../../redux/actions/user_actions";
+
 import MyButton from "./button";
 
 class Card extends Component {
@@ -58,4 +61,10 @@ class Card extends Component {
     }
 }
 
-export default Card;
+const mapStateToProps = state => {
+    return {
+        user: state.user,
+    };
+};
+
+export default connect(mapStateToProps)(Card);
