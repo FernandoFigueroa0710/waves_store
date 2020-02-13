@@ -8,7 +8,7 @@ import faTimes from "@fortawesome/fontawesome-free-solid/faTimes";
 
 const ProductInfo = ({ productDetail }) => {
     const { name, description } = productDetail;
-    console.log("HERE", productDetail);
+
     const showProductTags = detail => (
         <div className="product_tags">
             {detail.shipping ? (
