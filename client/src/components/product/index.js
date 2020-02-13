@@ -12,7 +12,11 @@ import {
 class ProductDetail extends Component {
     componentDidMount() {
         const id = this.props.match.params.id;
-        this.props.dispatch(getProductDetail(id));
+        this.props.dispatch(getProductDetail(id)).then(response => {
+            if (!this.props.products.productDetail || !response.payload) {
+                this.props.history.push("/");
+            }
+        });
     }
     componentWillUnmount() {
         this.props.dispatch(clearProductDetail());
