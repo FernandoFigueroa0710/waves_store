@@ -6,7 +6,7 @@ import faTruck from "@fortawesome/fontawesome-free-solid/faTruck";
 import faCheck from "@fortawesome/fontawesome-free-solid/faCheck";
 import faTimes from "@fortawesome/fontawesome-free-solid/faTimes";
 
-const ProductInfo = ({ productDetail }) => {
+const ProductInfo = ({ addToCart, productDetail }) => {
     const { name, description } = productDetail;
 
     const showProductTags = detail => (
@@ -52,7 +52,7 @@ const ProductInfo = ({ productDetail }) => {
                 <MyButton
                     type="add_to_cart"
                     runAction={() => {
-                        console.log("add to cart");
+                        addToCart(detail._id);
                     }}
                 />
             </div>
