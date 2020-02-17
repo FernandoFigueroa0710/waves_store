@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DashboardLayout from "../../hoc/dashboardLayout";
 import CartItemBlock from "../utils/user_cart_items/cart_item_block.component";
 import { connect } from "react-redux";
-import { getCartItems } from "../../redux/actions/user_actions";
+import { getCartItems, removeCartItem } from "../../redux/actions/user_actions";
 
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import faFrown from "@fortawesome/fontawesome-free-solid/faFrown";
@@ -52,7 +52,17 @@ class UserCart extends Component {
             <FontAwesomeIcon icon={faFrown} />
         </div>
     );
-    removeFromCart = () => {};
+    removeFromCart = id => {
+        this.props.dispatch(removeCartItem(id)).then(response => {
+            if (this.props.user.cartDetail.length <= 0) {
+                this.setState({
+                    showTotal: false,
+                });
+            } else {
+                this.calculateTotalInItems(this.props.user.cartDetail);
+            }
+        });
+    };
     render() {
         return (
             <DashboardLayout>

@@ -4,7 +4,7 @@ export const USER_SERVER = "http://localhost:3002/api/users";
 export const PRODUCTS_SERVER = "http://localhost:3002/api/products";
 export const PRODUCT_SERVER = "http://localhost:3002/api/product";
 
-//Resusable functions
+//Reusable functions
 
 export function setCartItems(userCart, items) {
     userCart.map(cartItem => {
@@ -15,4 +15,17 @@ export function setCartItems(userCart, items) {
         });
     });
     return items;
+}
+
+export function removeCartItems(data) {
+    console.log("CART ITEMS", data);
+    data.cart.forEach(cartItem => {
+        data.cartDetail.forEach((cartDetailItem, index) => {
+            if (cartItem.id === cartDetailItem._id) {
+                cartDetailItem[index].quantity = cartItem.quantity;
+            }
+        });
+    });
+    console.log("DATA 2 RETURN", data);
+    return data;
 }

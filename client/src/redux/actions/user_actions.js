@@ -3,6 +3,7 @@ import {
     USER_SERVER,
     PRODUCT_SERVER,
     setCartItems,
+    removeCartItems,
 } from "../../components/utils/misc";
 import {
     LOGIN_USER,
@@ -11,6 +12,7 @@ import {
     LOGOUT_USER,
     ADD_TO_CART,
     GET_USER_CART_ITEMS,
+    DELETE_CART_ITEMS,
 } from "./types";
 
 export function registerUser(dataToSubmit) {
@@ -55,6 +57,29 @@ export function addToCart(_id) {
         .catch(err => console.log("ERR", err));
     return {
         type: ADD_TO_CART,
+        payload: authRequest,
+    };
+}
+
+export function removeCartItem(id) {
+    const authRequest = axios
+        .get(`${USER_SERVER}/removeFromCart?_id=${id}`, {
+            withCredentials: true,
+        })
+        .then(response => {
+            response.data.cart.forEach(item => {
+                response.data.cartDetail.forEach((k, i) => {
+                    if (item.id === k._id) {
+                        response.data.cartDetail[i].quantity = item.quantity;
+                    }
+                });
+            });
+            return response.data;
+        })
+        .catch(err => console.log("Err", err));
+
+    return {
+        type: DELETE_CART_ITEMS,
         payload: authRequest,
     };
 }
