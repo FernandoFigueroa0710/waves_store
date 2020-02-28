@@ -4,15 +4,15 @@ import PaypalExpressBtn from "react-paypal-express-checkout";
 export default class Paypal extends Component {
     render() {
         const onSuccess = payment => {
-            console.log(JSON.stringify(payment));
+            console.log("SUCCESS", JSON.stringify(payment));
         };
 
         const onCancel = data => {
-            console.log(JSON.stringify(data));
+            console.log("CANCEL", JSON.stringify(data));
         };
 
         const onError = err => {
-            console.log(JSON.stringify(err));
+            console.log("ERROR", JSON.stringify(err));
         };
 
         let env = "sandbox";
