@@ -66,9 +66,18 @@ class UserCart extends Component {
         });
     };
 
-    transactionError = () => {};
-    transactionCancelled = () => {};
-    transactionSuccess = () => {};
+    transactionError = data => {
+        console.log("PAYPAL ERROR", data);
+    };
+    transactionCancelled = data => {
+        console.log("PAYPAL CANCELLED", data);
+    };
+    transactionSuccess = data => {
+        this.setState({
+            showTotal: false,
+            showSuccess: true,
+        });
+    };
     render() {
         return (
             <DashboardLayout>

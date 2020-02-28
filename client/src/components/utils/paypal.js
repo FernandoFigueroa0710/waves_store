@@ -5,14 +5,17 @@ export default class Paypal extends Component {
     render() {
         const onSuccess = payment => {
             console.log("SUCCESS", JSON.stringify(payment));
+            this.props.onSuccess(payment);
         };
 
         const onCancel = data => {
             console.log("CANCEL", JSON.stringify(data));
+            this.props.onCancel(data);
         };
 
         const onError = err => {
             console.log("ERROR", JSON.stringify(err));
+            this.props.onError(err);
         };
 
         let env = "sandbox";
