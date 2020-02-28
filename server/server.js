@@ -352,6 +352,25 @@ app.get("/api/users/removeFromCart", auth, (req, res) => {
         }
     );
 });
+
+app.post("/api/users/successBuy", auth, (req, res) => {
+    let history = [];
+    let transactionData = {};
+    //enter user history
+    req.body.cartDetail.forEach(item => {
+        history.push({
+            date: Date.now(),
+            name: item.name,
+            brand: item.brand,
+            id: item._id,
+            price: item.price,
+            quantity: item.quantity,
+            paymentId: req.body.paymentData.paymentID,
+        });
+    });
+    // store payment info
+});
+
 app.get("/api/users/logout", auth, (req, res) => {
     User.findOneAndUpdate({ _id: req.user._id }, { token: " " }, (err, doc) => {
         if (err) return res.json({ success: false, err });
