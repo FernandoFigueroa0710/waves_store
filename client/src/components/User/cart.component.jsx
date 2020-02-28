@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import DashboardLayout from "../../hoc/dashboardLayout";
 import CartItemBlock from "../utils/user_cart_items/cart_item_block.component";
+import Paypal from "../utils/paypal";
+
 import { connect } from "react-redux";
 import { getCartItems, removeCartItem } from "../../redux/actions/user_actions";
 
@@ -63,6 +65,19 @@ class UserCart extends Component {
             }
         });
     };
+
+    transactionError = data => {
+        console.log("PAYPAL ERROR", data);
+    };
+    transactionCancelled = data => {
+        console.log("PAYPAL CANCELLED", data);
+    };
+    transactionSuccess = data => {
+        this.setState({
+            showTotal: false,
+            showSuccess: true,
+        });
+    };
     render() {
         return (
             <DashboardLayout>
@@ -85,7 +100,20 @@ class UserCart extends Component {
                         )}
                     </div>
                     {this.state.showTotal ? (
-                        <div className="paypal_bottom_container">paypal</div>
+                        <div className="paypal_button_container">
+                            <Paypal
+                                toPay={this.state.total}
+                                transactionError={data =>
+                                    this.transactionError(data)
+                                }
+                                transactionCancelled={data =>
+                                    this.transactionCancelled(data)
+                                }
+                                onSuccess={data =>
+                                    this.transactionSuccess(data)
+                                }
+                            />
+                        </div>
                     ) : null}
                 </div>
             </DashboardLayout>

@@ -18,7 +18,6 @@ export function setCartItems(userCart, items) {
 }
 
 export function removeCartItems(data) {
-    console.log("CART ITEMS", data);
     data.cart.forEach(cartItem => {
         data.cartDetail.forEach((cartDetailItem, index) => {
             if (cartItem.id === cartDetailItem._id) {
@@ -26,6 +25,5 @@ export function removeCartItems(data) {
             }
         });
     });
-    console.log("DATA 2 RETURN", data);
     return data;
 }
