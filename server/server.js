@@ -37,6 +37,7 @@ const { User } = require("./models/user");
 const { Brand } = require("./models/brand");
 const { Wood } = require("./models/wood");
 const { Product } = require("./models/product");
+const { Payment } = require("./models/product");
 
 //********Middleware***********//
 const { auth } = require("./middleware/auth");
@@ -369,6 +370,14 @@ app.post("/api/users/successBuy", auth, (req, res) => {
         });
     });
     // store payment info
+    transactionData.user = {
+        id: req.user._id,
+        name: req.user.name,
+        lastName: req.user.lastName,
+        email: req.user.email,
+    };
+    transactionData.data = req.body.paymentData;
+    transactionData.products = history;
 });
 
 app.get("/api/users/logout", auth, (req, res) => {
