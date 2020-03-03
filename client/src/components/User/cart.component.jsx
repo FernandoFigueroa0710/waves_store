@@ -4,7 +4,11 @@ import CartItemBlock from "../utils/user_cart_items/cart_item_block.component";
 import Paypal from "../utils/paypal";
 
 import { connect } from "react-redux";
-import { getCartItems, removeCartItem } from "../../redux/actions/user_actions";
+import {
+    getCartItems,
+    removeCartItem,
+    successBuy,
+} from "../../redux/actions/user_actions";
 
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import faFrown from "@fortawesome/fontawesome-free-solid/faFrown";
@@ -73,10 +77,21 @@ class UserCart extends Component {
         console.log("PAYPAL CANCELLED", data);
     };
     transactionSuccess = data => {
-        this.setState({
-            showTotal: false,
-            showSuccess: true,
-        });
+        this.props
+            .dispatch(
+                successBuy({
+                    cartDetail: this.props.user.cartDetail,
+                    paymentData: data,
+                })
+            )
+            .then(() => {
+                if (this.props.user.successBuy) {
+                    this.setState({
+                        showTotal: false,
+                        showSuccess: true,
+                    });
+                }
+            });
     };
     render() {
         return (
