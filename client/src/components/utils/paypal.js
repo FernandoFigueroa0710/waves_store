@@ -10,12 +10,12 @@ export default class Paypal extends Component {
 
         const onCancel = data => {
             console.log("CANCEL", JSON.stringify(data));
-            this.props.onCancel(data);
+            this.props.transactionCancelled(data);
         };
 
         const onError = err => {
             console.log("ERROR", JSON.stringify(err));
-            this.props.onError(err);
+            this.props.transactionError(err);
         };
 
         let env = "sandbox";
