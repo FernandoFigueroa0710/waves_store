@@ -13,6 +13,7 @@ import {
     ADD_TO_CART,
     GET_USER_CART_ITEMS,
     DELETE_CART_ITEMS,
+    ON_SUCCESS_BUY_USER,
 } from "./types";
 
 export function registerUser(dataToSubmit) {
@@ -94,6 +95,18 @@ export function getCartItems(cartItems, userCart) {
         payload: request,
     };
 }
+
+export function successBuy(data) {
+    const request = axios
+        .post(`${USER_SERVER}/successBuy`, data, { withCredentials: true })
+        .then(response => response.data)
+        .catch(err => console.log("ERROR", err));
+    return {
+        type: ON_SUCCESS_BUY_USER,
+        payload: request,
+    };
+}
+
 export function logoutUser() {
     const request = axios
         .get(`${USER_SERVER}/logout`, { withCredentials: true })

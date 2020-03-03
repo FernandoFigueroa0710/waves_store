@@ -17,3 +17,4 @@ export const ADD_PRODUCT = "add_product";
 export const ADD_BRAND = "add_brand";
 export const ADD_TO_CART = "add_to_cart";
 export const CLEAR_PRODUCT = " clear_product";
+export const ON_SUCCESS_BUY_USER = "on_success_buy_user";
