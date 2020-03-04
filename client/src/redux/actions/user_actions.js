@@ -3,7 +3,6 @@ import {
     USER_SERVER,
     PRODUCT_SERVER,
     setCartItems,
-    removeCartItems,
 } from "../../components/utils/misc";
 import {
     LOGIN_USER,
@@ -14,6 +13,8 @@ import {
     GET_USER_CART_ITEMS,
     DELETE_CART_ITEMS,
     ON_SUCCESS_BUY_USER,
+    UPDATE_USER_INFO,
+    CLEAR_UPDATE_USER_DATA,
 } from "./types";
 
 export function registerUser(dataToSubmit) {
@@ -115,5 +116,26 @@ export function logoutUser() {
     return {
         type: LOGOUT_USER,
         payload: request,
+    };
+}
+
+export function updateUserData(dataToSubmit) {
+    const request = axios
+        .post(`${USER_SERVER}/update_profile`, dataToSubmit, {
+            withCredentials: true,
+        })
+        .then(response => response.data)
+        .catch(err => console.log("ERR", err));
+
+    return {
+        type: UPDATE_USER_INFO,
+        payload: request,
+    };
+}
+
+export function clearUpdateUser() {
+    return {
+        type: CLEAR_UPDATE_USER_DATA,
+        payload: "",
     };
 }
