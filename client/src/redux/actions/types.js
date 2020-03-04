@@ -18,3 +18,5 @@ export const ADD_BRAND = "add_brand";
 export const ADD_TO_CART = "add_to_cart";
 export const CLEAR_PRODUCT = " clear_product";
 export const ON_SUCCESS_BUY_USER = "on_success_buy_user";
+export const UPDATE_USER_INFO = "update_user_info";
+export const CLEAR_UPDATE_USER_DATA = "clear_update_user_data";

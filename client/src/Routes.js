@@ -9,6 +9,7 @@ import AddProduct from "./components/User/admin/add_products";
 import Shop from "./components/shopping/index";
 import AddFile from "./components/User/admin/add_file";
 import UserCart from "./components/User/cart.component";
+import UserProfile from "./components/User/updateProfile.component";
 import ManageCategories from "./components/User/admin/manage_categories";
 import ProductDetail from "./components/product/index";
 import Auth from "./hoc/auth";
@@ -22,6 +23,10 @@ const Routes = () => {
                     component={Auth(Userdashboard, true)}
                 />
                 <Route path="/user/cart" component={Auth(UserCart, true)} />
+                <Route
+                    path="/user/profile"
+                    component={Auth(UserProfile, true)}
+                />
                 <Route
                     path="/admin/add_product"
                     component={Auth(AddProduct, true)}
