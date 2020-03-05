@@ -1,5 +1,14 @@
 import React, { Component } from "react";
 
+import FormField from "../../utils/forms/formField";
+import {
+    update,
+    generateData,
+    isFormValid,
+    populateFields,
+} from "../../utils/forms/formActions";
+
+import { connect } from "react-redux";
 class UpdateNfo extends Component {
     render() {
         return (
@@ -9,4 +18,10 @@ class UpdateNfo extends Component {
         );
     }
 }
-export default UpdateNfo;
+
+const mapStateToProps = state => {
+    return {
+        site: state.site,
+    };
+};
+export default connect(mapStateToProps)(UpdateNfo);
