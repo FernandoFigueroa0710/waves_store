@@ -54,12 +54,12 @@ class UpdateNfo extends Component {
                 config: {
                     label: "Phone Number",
                     name: "phone_input",
-                    type: "number",
+                    type: "text",
                     placeholder: "Enter site number",
                 },
                 validation: {
                     required: true,
-                    email: true,
+                    email: false,
                 },
                 valid: false,
                 touched: false,
@@ -86,52 +86,55 @@ class UpdateNfo extends Component {
             },
         },
     };
-    updateForm = element => {
+
+    updateForm = (element) => {
         const newFormData = update(element, this.state.formData, "site_info");
         this.setState({
             formError: false,
             formData: newFormData,
         });
     };
-    submitForm = event => {
-        event.preventDefault();
 
+    submitForm = (event) => {
+        event.preventDefault();
         let dataToSubmit = generateData(this.state.formData, "site_info");
 
         let formIsValid = isFormValid(this.state.formData, "site_info");
 
         if (formIsValid) {
             console.log("HERE", dataToSubmit);
+            this.setState({ formSuccess: true });
         } else {
             this.setState({
                 formError: true,
             });
         }
     };
+
     render() {
         return (
             <div>
-                <form onSubmit={event => this.submitForm(event)}>
+                <form onSubmit={(event) => this.submitForm(event)}>
                     <h1>Store info</h1>
                     <FormField
                         id={"address"}
                         formData={this.state.formData.address}
-                        change={element => this.updateForm(element)}
+                        change={(element) => this.updateForm(element)}
                     />
                     <FormField
                         id={"hours"}
                         formData={this.state.formData.hours}
-                        change={element => this.updateForm(element)}
+                        change={(element) => this.updateForm(element)}
                     />
                     <FormField
                         id={"phone"}
                         formData={this.state.formData.phone}
-                        change={element => this.updateForm(element)}
+                        change={(element) => this.updateForm(element)}
                     />
                     <FormField
                         id={"email"}
                         formData={this.state.formData.email}
-                        change={element => this.updateForm(element)}
+                        change={(element) => this.updateForm(element)}
                     />
                     <div>
                         {this.state.formSuccess ? (
@@ -144,7 +147,7 @@ class UpdateNfo extends Component {
                                 Please check your data
                             </div>
                         ) : null}
-                        <button onClick={event => this.submitForm(event)}>
+                        <button onClick={(event) => this.submitForm(event)}>
                             Update store address
                         </button>
                     </div>
@@ -154,7 +157,7 @@ class UpdateNfo extends Component {
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         site: state.site,
     };
