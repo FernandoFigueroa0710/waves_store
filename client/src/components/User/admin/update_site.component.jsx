@@ -9,6 +9,7 @@ import {
 } from "../../utils/forms/formActions";
 
 import { connect } from "react-redux";
+import { getSiteData } from "../../../redux/actions/site_actions";
 class UpdateNfo extends Component {
     state = {
         formError: false,
@@ -87,7 +88,7 @@ class UpdateNfo extends Component {
         },
     };
 
-    updateForm = (element) => {
+    updateForm = element => {
         const newFormData = update(element, this.state.formData, "site_info");
         this.setState({
             formError: false,
@@ -95,7 +96,7 @@ class UpdateNfo extends Component {
         });
     };
 
-    submitForm = (event) => {
+    submitForm = event => {
         event.preventDefault();
         let dataToSubmit = generateData(this.state.formData, "site_info");
 
@@ -110,31 +111,42 @@ class UpdateNfo extends Component {
             });
         }
     };
-
+    componentDidMount() {
+        this.props.dispatch(getSiteData()).then(() => {
+            console.log("siteData Array", this.props.site.siteData[0]);
+            const newFormData = populateFields(
+                this.state.formData,
+                this.props.site.siteData[0]
+            );
+            this.setState({
+                formData: newFormData,
+            });
+        });
+    }
     render() {
         return (
             <div>
-                <form onSubmit={(event) => this.submitForm(event)}>
+                <form onSubmit={event => this.submitForm(event)}>
                     <h1>Store info</h1>
                     <FormField
                         id={"address"}
                         formData={this.state.formData.address}
-                        change={(element) => this.updateForm(element)}
+                        change={element => this.updateForm(element)}
                     />
                     <FormField
                         id={"hours"}
                         formData={this.state.formData.hours}
-                        change={(element) => this.updateForm(element)}
+                        change={element => this.updateForm(element)}
                     />
                     <FormField
                         id={"phone"}
                         formData={this.state.formData.phone}
-                        change={(element) => this.updateForm(element)}
+                        change={element => this.updateForm(element)}
                     />
                     <FormField
                         id={"email"}
                         formData={this.state.formData.email}
-                        change={(element) => this.updateForm(element)}
+                        change={element => this.updateForm(element)}
                     />
                     <div>
                         {this.state.formSuccess ? (
@@ -147,7 +159,7 @@ class UpdateNfo extends Component {
                                 Please check your data
                             </div>
                         ) : null}
-                        <button onClick={(event) => this.submitForm(event)}>
+                        <button onClick={event => this.submitForm(event)}>
                             Update store address
                         </button>
                     </div>
@@ -157,9 +169,9 @@ class UpdateNfo extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     return {
-        site: state.site,
+        site: state.siteNfo,
     };
 };
 export default connect(mapStateToProps)(UpdateNfo);
