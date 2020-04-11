@@ -24,13 +24,13 @@ const Routes = () => {
                     component={Auth(Userdashboard, true)}
                 />
                 <Route
-                    path="/admin/site_info"
-                    component={Auth(ManageSite, true)}
+                    path="/user/profile"
+                    component={Auth(UserProfile, true)}
                 />
                 <Route path="/user/cart" component={Auth(UserCart, true)} />
                 <Route
-                    path="/user/profile"
-                    component={Auth(UserProfile, true)}
+                    path="/admin/site_info"
+                    component={Auth(ManageSite, true)}
                 />
                 <Route
                     path="/admin/add_product"
