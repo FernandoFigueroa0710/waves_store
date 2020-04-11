@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { GET_SITE_DATA, ADD_SITE_DATA } from "./types";
+import { GET_SITE_DATA, UPDATE_SITE_DATA } from "./types";
 
 import { SITE_SERVER } from "../../components/utils/misc";
 
@@ -15,9 +15,15 @@ export function getSiteData() {
     };
 }
 
-export function addSiteData() {
+export function updateSiteData(dataToSubmit) {
+    const request = axios
+        .post(`${SITE_SERVER}/site_data`, dataToSubmit, {
+            withCredentials: true,
+        })
+        .then(response => response.data)
+        .catch(err => console.log("Err", err));
     return {
-        type: ADD_SITE_DATA,
-        payload: "",
+        type: UPDATE_SITE_DATA,
+        payload: request,
     };
 }

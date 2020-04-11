@@ -26,4 +26,4 @@ export const GET_BRANDS = "get_brands";
 export const ADD_BRAND = "add_brand";
 //Site info
 export const GET_SITE_DATA = "get_site_data";
-export const ADD_SITE_DATA = "add_site_data";
+export const UPDATE_SITE_DATA = "update_site_data";
