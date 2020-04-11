@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { auth } from "../redux/actions/user_actions";
 import { CircularProgress } from "@material-ui/core";
 
-export default function (ComposedClass, reload, adminRoute = null) {
+export default function(ComposedClass, reload, adminRoute = null) {
     class AuthenticationCheck extends Component {
         _isMounted = false;
 
         state = {
             loading: true,
-
-        }
+        };
 
         componentDidMount() {
             this._isMounted = true;
@@ -31,8 +30,8 @@ export default function (ComposedClass, reload, adminRoute = null) {
                     }
                 }
                 this.setState({
-                    loading: false
-                })
+                    loading: false,
+                });
             });
         }
         componentWillUnmount() {
@@ -42,9 +41,12 @@ export default function (ComposedClass, reload, adminRoute = null) {
             if (this.state.loading) {
                 return (
                     <div className="main_loader">
-                        <CircularProgress style={{ color: '#999592' }} thickness={7} />
+                        <CircularProgress
+                            style={{ color: "#999592" }}
+                            thickness={7}
+                        />
                     </div>
-                )
+                );
             }
             return (
                 <div>
@@ -56,9 +58,8 @@ export default function (ComposedClass, reload, adminRoute = null) {
 
     function mapStateToProps(state) {
         return {
-            user: state.user
-        }
+            user: state.user,
+        };
     }
     return connect(mapStateToProps)(AuthenticationCheck);
 }
-

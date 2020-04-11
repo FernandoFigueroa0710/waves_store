@@ -27,7 +27,7 @@ mongoose
         useFindAndModify: false,
     })
     .then(() => console.log("Mongo DB Connected"))
-    .catch(err => console.log("Err is", err));
+    .catch((err) => console.log("Err is", err));
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -40,6 +40,7 @@ const { Brand } = require("./models/brand");
 const { Wood } = require("./models/wood");
 const { Product } = require("./models/product");
 const { Payment } = require("./models/product");
+const { Site } = require("./models/site");
 
 //********Middleware***********//
 const { auth } = require("./middleware/auth");
@@ -113,7 +114,7 @@ app.get("/api/product/item_by_id", (req, res) => {
     if (type === "array") {
         let ids = req.query.id.split(",");
         items = [];
-        items = ids.map(item => {
+        items = ids.map((item) => {
             return mongoose.Types.ObjectId(item);
         });
     }
@@ -223,13 +224,11 @@ app.post("/api/users/login", (req, res) => {
                 if (err) {
                     return res.status(400).send(err);
                 }
-                res.cookie("x_auth", user.token)
-                    .status(200)
-                    .json({
-                        loginSuccess: true,
-                        message: "You are logged in",
-                        x_auth: user.token,
-                    });
+                res.cookie("x_auth", user.token).status(200).json({
+                    loginSuccess: true,
+                    message: "You are logged in",
+                    x_auth: user.token,
+                });
             });
         });
     });
@@ -258,7 +257,7 @@ let storage = multer.diskStorage({
 const upload = multer({ storage: storage }).single("file");
 
 app.post("/api/users/uploadfile", (req, res) => {
-    upload(req, res, err => {
+    upload(req, res, (err) => {
         if (err) {
             return res.json({ success: false, err });
         }
@@ -276,7 +275,7 @@ app.get("/api/users/admin_files", (req, res) => {
 app.post("/api/users/uploadimage", formidable(), (req, res) => {
     cloudinary.uploader.upload(
         req.files.file.path,
-        result => {
+        (result) => {
             res.status(200).send({
                 public_id: result.public_id,
                 url: result.url,
@@ -292,7 +291,7 @@ app.post("/api/users/uploadimage", formidable(), (req, res) => {
 app.post("/api/users/add_toCart", auth, (req, res) => {
     User.findOne({ _id: req.user._id }, (err, doc) => {
         let duplicate = false;
-        doc.cart.forEach(item => {
+        doc.cart.forEach((item) => {
             if (item.id == req.query.productId) {
                 duplicate = true;
             }
@@ -339,7 +338,7 @@ app.get("/api/users/removeFromCart", auth, (req, res) => {
         { new: true },
         (err, doc) => {
             let cart = doc.cart;
-            let array = cart.map(item => {
+            let array = cart.map((item) => {
                 return mongoose.Types.ObjectId(item.id);
             });
 
@@ -360,7 +359,7 @@ app.post("/api/users/successBuy", auth, (req, res) => {
     let history = [];
     let transactionData = {};
     //enter user history
-    req.body.cartDetail.forEach(item => {
+    req.body.cartDetail.forEach((item) => {
         history.push({
             date: Date.now(),
             name: item.name,
@@ -392,7 +391,7 @@ app.post("/api/users/successBuy", auth, (req, res) => {
             payment.save((err, doc) => {
                 if (err) return res.json({ success: false, err });
                 let products = [];
-                doc.product.forEach(item => {
+                doc.product.forEach((item) => {
                     products.push({ id: item.id, quantity: item.quantity });
                 });
                 async.eachSeries(
@@ -405,7 +404,7 @@ app.post("/api/users/successBuy", auth, (req, res) => {
                             callback
                         );
                     },
-                    err => {
+                    (err) => {
                         return res.json({ success: false, err });
                     }
                 );
@@ -443,6 +442,31 @@ app.get("/api/users/logout", auth, (req, res) => {
         });
     });
 });
+
+/** *****************Site Info**************************/
+
+app.get("/api/site/site_data", (req, res) => {
+    Site.find({}, (err, site) => {
+        if (err) return res.status(400).send(err);
+        res.status(200).send(site[0].siteInfo);
+    });
+});
+
+app.post("/api/site/site_data", auth, admin, (req, res) => {
+    Site.findOneAndUpdate(
+        { name: "Site" },
+        { $set: { siteInfo: req.body } },
+        { new: true },
+        (err, doc) => {
+            if (err) return res.json({ success: false, err });
+            return res.status(200).send({
+                success: true,
+                siteInfo: doc.siteInfo,
+            });
+        }
+    );
+});
+
 const port = process.env.PORT || 3002;
 
 app.listen(port, () => {
