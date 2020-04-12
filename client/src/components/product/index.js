@@ -13,7 +13,7 @@ import {
 class ProductDetail extends Component {
     componentDidMount() {
         const id = this.props.match.params.id;
-        this.props.dispatch(getProductDetail(id)).then(response => {
+        this.props.dispatch(getProductDetail(id)).then((response) => {
             if (!this.props.products.productDetail || !response.payload) {
                 this.props.history.push("/");
             }
@@ -22,11 +22,11 @@ class ProductDetail extends Component {
     componentWillUnmount() {
         this.props.dispatch(clearProductDetail());
     }
-    addToCarthandler = id => {
+    addToCarthandler = (id) => {
         this.props.dispatch(addToCart(id));
     };
     render() {
-        const id = this.props.match.params.id;
+        //const id = this.props.match.params.id;
         const { productDetail } = this.props.products;
         return (
             <div>
@@ -43,7 +43,9 @@ class ProductDetail extends Component {
                             </div>
                             <div className="right">
                                 <ProductInfo
-                                    addToCart={id => this.addToCarthandler(id)}
+                                    addToCart={(id) =>
+                                        this.addToCarthandler(id)
+                                    }
                                     productDetail={productDetail}
                                 />
                             </div>
@@ -56,7 +58,7 @@ class ProductDetail extends Component {
         );
     }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         products: state.products,
     };

@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { auth } from "../redux/actions/user_actions";
 import { CircularProgress } from "@material-ui/core";
@@ -14,7 +14,7 @@ const Auth = (ComposedClass, reload, adminRoute = null) => {
         }
 
         componentDidMount() {
-            this.props.dispatch(auth()).then(response => {
+            this.props.dispatch(auth()).then((response) => {
                 let user = this.props.user.userData;
                 if (!user.isAuth) {
                     if (reload) {
